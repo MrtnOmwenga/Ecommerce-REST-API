@@ -1,8 +1,8 @@
-package com.ecommerce.api.controller;
+package com.ecommerce.api.controllers;
 
-import com.ecommerce.api.model.Cart;
-import com.ecommerce.api.model.CartItem;
-import com.ecommerce.api.service.CartService;
+import com.ecommerce.api.models.Cart;
+import com.ecommerce.api.models.CartItem;
+import com.ecommerce.api.services.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

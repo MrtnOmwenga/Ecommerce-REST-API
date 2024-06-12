@@ -1,13 +1,13 @@
-package com.ecommerce.api.test;
+package com.ecommerce.api.tests;
 
-import com.ecommerce.api.model.Cart;
-import com.ecommerce.api.model.CartItem;
-import com.ecommerce.api.model.Product;
-import com.ecommerce.api.model.User;
-import com.ecommerce.api.repository.CartItemRepository;
-import com.ecommerce.api.repository.CartRepository;
-import com.ecommerce.api.repository.ProductRepository;
-import com.ecommerce.api.repository.UserRepository;
+import com.ecommerce.api.models.Cart;
+import com.ecommerce.api.models.CartItem;
+import com.ecommerce.api.models.Product;
+import com.ecommerce.api.models.User;
+import com.ecommerce.api.repositories.CartItemRepository;
+import com.ecommerce.api.repositories.CartRepository;
+import com.ecommerce.api.repositories.ProductRepository;
+import com.ecommerce.api.repositories.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

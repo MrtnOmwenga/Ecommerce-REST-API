@@ -1,6 +1,6 @@
-package com.ecommerce.api.repository;
+package com.ecommerce.api.repositories;
 
-import com.ecommerce.api.model.Cart;
+import com.ecommerce.api.models.Cart;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

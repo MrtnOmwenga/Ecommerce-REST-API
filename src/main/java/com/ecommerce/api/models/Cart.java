@@ -1,5 +1,6 @@
-package com.ecommerce.api.model;
+package com.ecommerce.api.models;
 
+import com.ecommerce.api.models.User;
 import jakarta.persistence.*;
 import java.util.List;
 

@@ -1,7 +1,8 @@
-package com.ecommerce.api.controller;
+package com.ecommerce.api.controllers;
 
-import com.ecommerce.api.model.User;
-import com.ecommerce.api.service.UserService;
+import com.ecommerce.api.models.User;
+import com.ecommerce.api.models.Roles;
+import com.ecommerce.api.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -9,45 +10,44 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import jakarta.validation.Valid;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
+
   @Autowired
   private UserService userService;
 
   @PostMapping
   public ResponseEntity<User> createUser(@Valid @RequestBody User user, BindingResult result) {
     if (result.hasErrors()) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+      return ResponseEntity.badRequest().build();
     }
 
-    User createdUser = userService.createUser(user.getUsername(), user.getEmail());
+    List<String> roleNames = user.getRoles().stream()
+      .map(Roles::getName)
+      .collect(Collectors.toList());
+
+    User createdUser = userService.createUser(user.getUsername(), user.getEmail(), user.getPassword(), roleNames);
     return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
   }
 
   @GetMapping("/{id}")
   public ResponseEntity<User> getUser(@PathVariable Long id) {
     User user = userService.getUser(id);
-    System.out.println(user);
-    if (user != null) {
-      return ResponseEntity.ok(user);
-    } else {
-      return ResponseEntity.notFound().build();
-    }
+    return ResponseEntity.ok(user);
   }
 
   @PutMapping("/{id}")
   public ResponseEntity<User> updateUser(@PathVariable Long id, @Valid @RequestBody User user, BindingResult result) {
     if (result.hasErrors()) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+      return ResponseEntity.badRequest().build();
     }
 
     User updatedUser = userService.updateUser(id, user);
-    if (updatedUser != null) {
-      return ResponseEntity.ok(updatedUser);
-    } else {
-      return ResponseEntity.notFound().build();
-    }
+    return ResponseEntity.ok(updatedUser);
   }
 
   @DeleteMapping("/{id}")

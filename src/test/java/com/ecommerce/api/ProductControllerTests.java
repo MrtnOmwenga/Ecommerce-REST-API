@@ -1,7 +1,7 @@
-package com.ecommerce.api.test;
+package com.ecommerce.api.tests;
 
-import com.ecommerce.api.model.Product;
-import com.ecommerce.api.repository.ProductRepository;
+import com.ecommerce.api.models.Product;
+import com.ecommerce.api.repositories.ProductRepository;
 import java.util.List;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;

@@ -1,7 +1,7 @@
-package com.ecommerce.api.test;
+package com.ecommerce.api.tests;
 
-import com.ecommerce.api.model.User;
-import com.ecommerce.api.repository.UserRepository;
+import com.ecommerce.api.models.User;
+import com.ecommerce.api.repositories.UserRepository;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -28,19 +28,18 @@ public class UserControllerTests {
 
   @Test
   public void testCreateUser_ValidUser_ReturnsCreated() {
-    // Prepare user data
     User user = new User();
     user.setUsername("testuser");
     user.setEmail("test@example.com");
+    user.setPassword("password123");
 
-    // Perform POST request
     ResponseEntity<User> response = restTemplate.postForEntity("/api/users", user, User.class);
 
-    // Verify response
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
     assertThat(response.getBody()).isNotNull();
     assertThat(response.getBody().getUsername()).isEqualTo("testuser");
     assertThat(response.getBody().getEmail()).isEqualTo("test@example.com");
+    assertThat(response.getBody().getPassword()).isNull();
   }
 
   /*
@@ -66,6 +65,7 @@ public class UserControllerTests {
     User userToCreate = new User();
     userToCreate.setUsername("testuser");
     userToCreate.setEmail("test@example.com");
+    userToCreate.setPassword("password123");
 
     ResponseEntity<User> createUserResponse = restTemplate.postForEntity("/api/users", userToCreate, User.class);
 
@@ -89,6 +89,7 @@ public class UserControllerTests {
     User userToCreate = new User();
     userToCreate.setUsername("testuser2");
     userToCreate.setEmail("test2@example.com");
+    userToCreate.setPassword("password123");
 
     ResponseEntity<User> createUserResponse = restTemplate.postForEntity("/api/users", userToCreate, User.class);
 
@@ -120,6 +121,7 @@ public class UserControllerTests {
     User userToCreate = new User();
     userToCreate.setUsername("testuser3");
     userToCreate.setEmail("test3@example.com");
+    userToCreate.setPassword("password123");
 
     ResponseEntity<User> createUserResponse = restTemplate.postForEntity("/api/users", userToCreate, User.class);
 
@@ -136,6 +138,26 @@ public class UserControllerTests {
 
     ResponseEntity<User> getUserResponse = restTemplate.getForEntity("/api/users/" + userId, User.class);
     assertThat(getUserResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+  }
+
+  @Test
+  public void testCreateUser_DuplicateUsername_ReturnsBadRequest() {
+    // Assume a user with the same username already exists in the repository
+    User existingUser = new User();
+    existingUser.setUsername("existinguser");
+    existingUser.setEmail("existing@example.com");
+    existingUser.setPassword("password123");
+    userRepository.save(existingUser);
+
+    // Try to create a new user with the same username
+    User newUser = new User();
+    newUser.setUsername("existinguser");
+    newUser.setEmail("new@example.com");
+    newUser.setPassword("password123");
+
+    ResponseEntity<Void> response = restTemplate.postForEntity("/api/users", newUser, Void.class);
+
+    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
   }
 
   @AfterAll
